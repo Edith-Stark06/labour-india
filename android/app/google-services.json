@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "840631080551",
+    "project_id": "registration-page-5f503",
+    "storage_bucket": "registration-page-5f503.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840631080551:android:3776fea36979cd5179a6c2",
+        "android_client_info": {
+          "package_name": "com.example.ngo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEiuT5ob4h3AcueSf__jB3h2UwmPA8bsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840631080551:android:e5540fcc980685a179a6c2",
+        "android_client_info": {
+          "package_name": "com.example.registrationpsge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEiuT5ob4h3AcueSf__jB3h2UwmPA8bsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
