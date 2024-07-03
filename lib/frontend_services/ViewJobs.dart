@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'job_model.dart';
-import 'JobDetials.dart';
+
 
 class ViewJobs extends StatelessWidget {
   final List<Job> jobs;

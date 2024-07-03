@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Company_services.dart';
+
+import 'employer/Comp_services.dart';
 
 class JobSuccess extends StatelessWidget {
   @override

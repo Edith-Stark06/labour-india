@@ -1,28 +1,34 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ngo/Company_services.dart';
-import 'RegisterPage.dart';  // Ensure this import is correct
+import 'package:ngo/backend_services/login_check.dart';
+import '../../backend_services/FirestoreService.dart';
+import 'Labour_services.dart';
+import '../RegisterPage.dart';  // Ensure this import is correct
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Company_Reg extends StatefulWidget {
+
+class Labour_Reg extends StatefulWidget {
   @override
-  _Company_RegState createState() => _Company_RegState();
+  _Labour_RegState createState() => _Labour_RegState();
 }
 
-class _Company_RegState extends State<Company_Reg> {
+class _Labour_RegState extends State<Labour_Reg> {
+
+  final firestoreService = FirestoreService();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool passwordsMatch = true;
 
   void checkPasswordMatch() {
     setState(() {
-      passwordsMatch = passwordController.text == confirmPasswordController.text;
+      passwordsMatch = _passwordController.text == _confirmPasswordController.text;
     });
   }
 
@@ -34,51 +40,47 @@ class _Company_RegState extends State<Company_Reg> {
 
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
       );
       String userId = userCredential.user!.uid;
+      bool success = await firestoreService.addUidToEmployee(userId);
 
-      // Store user details in 'employer' document under 'roles' collection
-      await _firestore.collection('roles').doc('employer').collection('employers').doc(userId).set({
-        'username': usernameController.text.trim(),
-        'email': emailController.text.trim(),
+
+      // Store user details in 'employee' document under 'roles' collection
+      await _firestore.collection('roles').doc('employee').collection('employees').doc(userId).set({
+        'username': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
         // Add more fields as needed
       });
+
+      await _auth.signOut();
 
       Fluttertoast.showToast(msg: 'Registration Successful');
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CompServices()),
+        MaterialPageRoute(builder: (context) => login_check()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        showToast('The password provided is too weak');
+        Fluttertoast.showToast(msg: 'The password provided is too weak');
       } else if (e.code == 'email-already-in-use') {
-        showToast('The account already exists for that email');
+        Fluttertoast.showToast(msg: 'The account already exists for that email');
       } else {
-        showToast('Signup failed: ${e.message}');
+        Fluttertoast.showToast(msg: 'Registration failed: ${e.message}');
       }
     } catch (e) {
-      showToast('Signup failed: ${e.toString()}');
+      Fluttertoast.showToast(msg: 'Registration failed: ${e.toString()}');
     }
-  }
-
-  void showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-    );
   }
 
   @override
   void dispose() {
-    usernameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -117,7 +119,7 @@ class _Company_RegState extends State<Company_Reg> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Company Name",
+                      "Name",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -126,9 +128,9 @@ class _Company_RegState extends State<Company_Reg> {
                       textAlign: TextAlign.end,
                     ),
                     TextField(
-                      controller: usernameController,
+                      controller: _nameController,
                       decoration: InputDecoration(
-                        hintText: "Company Name",
+                        hintText: "Name",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
@@ -152,14 +154,14 @@ class _Company_RegState extends State<Company_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: emailController,
+                      controller: _emailController,
                       decoration: InputDecoration(
-                        hintText: "Enter Email",
+                        hintText: "Email",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 5.0,
+                            width: 1.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),
@@ -178,15 +180,15 @@ class _Company_RegState extends State<Company_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: passwordController,
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: "Enter Password",
+                        hintText: "Enter password",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 5.0,
+                            width: 1.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),
@@ -205,19 +207,19 @@ class _Company_RegState extends State<Company_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: confirmPasswordController,
+                      controller: _confirmPasswordController,
                       obscureText: true,
                       onChanged: (value) {
                         checkPasswordMatch();
                       },
                       decoration: InputDecoration(
-                        hintText: "Confirm Password",
+                        hintText: "Confirm password",
                         errorText: passwordsMatch ? null : 'Passwords do not match',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 5.0,
+                            width: 1.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),

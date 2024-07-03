@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Company_services.dart';
-import 'Labour_services.dart';
+import 'employer/Comp_services.dart';
+import 'employee/Labour_services.dart';
 
 class ApplySuccess extends StatelessWidget {
   @override
@@ -9,7 +9,7 @@ class ApplySuccess extends StatelessWidget {
       onWillPop: () async {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CompServices()),
+          MaterialPageRoute(builder: (context) => Services()),
         );
         return false; // Prevent the default back button behavior
       },

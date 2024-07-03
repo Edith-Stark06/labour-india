@@ -2,12 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Add this import for SystemNavigator.pop()
-import 'package:ngo/ProfilePage.dart';
-import 'package:ngo/GovernmentSchemesPage.dart';
-import 'package:ngo/CardPage.dart';
-import 'package:ngo/AboutUsPage.dart';
-import 'package:ngo/RegisterPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../backend_services/login_check.dart';
+import '../AboutUsPage.dart';
+import '../CardPage.dart';
+import '../GovernmentSchemesPage.dart';
+import '../ProfilePage.dart';
+import '../RegisterPage.dart';
 
 class Services extends StatefulWidget {
   @override
@@ -139,16 +141,15 @@ class _ServicesState extends State<Services> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text('Logout'),
+                leading: const Icon(Icons.info),
+                title: const Text('Logout'),
                 onTap: () async {
-                  // Save the last visited screen before logging out
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  if (ModalRoute.of(context)?.settings.name != null) {
-                    prefs.setString('lastScreen', ModalRoute.of(context)!.settings.name!);
-                  }
                   await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacementNamed('/login');
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => login_check()),
+                  );
                 },
               ),
 
@@ -348,7 +349,7 @@ class _ServicesState extends State<Services> {
                       SizedBox(height: 20),
                       Center(
                         child: Image.asset(
-                          "assets/images/company_logo.png",
+                          "assets/images/Logo.png",
                           width: 80,
                           height: 80,
                         ),

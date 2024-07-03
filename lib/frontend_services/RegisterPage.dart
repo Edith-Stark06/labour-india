@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ngo/Company_Reg.dart';
-import 'package:ngo/Labour_Reg.dart';
+
+
+import 'employer/Company_Reg.dart';
+import 'employee/Labour_Reg.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -15,10 +17,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _createRoleCollection() async {
     try {
-
-      await FirebaseFirestore.instance.collection('roles').doc('employee').set({});
-      await FirebaseFirestore.instance.collection('roles').doc('employer').set({});
-
 
       if (selectedRole == 'Employee') {
         Navigator.pushReplacement(

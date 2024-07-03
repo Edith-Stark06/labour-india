@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/Company_services.dart';
+
+import 'employer/Comp_services.dart';
 
 
 class JobSuccess extends StatelessWidget {

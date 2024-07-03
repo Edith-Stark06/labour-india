@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'Company_services.dart';
+import 'employer/Comp_services.dart';
 import 'job_success.dart';
 
 class JobPosting extends StatefulWidget {

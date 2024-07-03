@@ -1,28 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ngo/Labour_services.dart';
-import 'RegisterPage.dart';  // Ensure this import is correct
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ngo/backend_services/login_check.dart';
+import '../../backend_services/FirestoreService.dart';
+import 'Comp_services.dart';
+import '../RegisterPage.dart';  // Ensure this import is correct
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Labour_Reg extends StatefulWidget {
+class Company_Reg extends StatefulWidget {
   @override
-  _Labour_RegState createState() => _Labour_RegState();
+  _Company_RegState createState() => _Company_RegState();
 }
 
-class _Labour_RegState extends State<Labour_Reg> {
+class _Company_RegState extends State<Company_Reg> {
+
+  final firestoreService = FirestoreService();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   bool passwordsMatch = true;
 
   void checkPasswordMatch() {
     setState(() {
-      passwordsMatch = _passwordController.text == _confirmPasswordController.text;
+      passwordsMatch = passwordController.text == confirmPasswordController.text;
     });
   }
 
@@ -33,44 +38,70 @@ class _Labour_RegState extends State<Labour_Reg> {
     }
 
     try {
+      // Logging before attempting to create user
+      print("Attempting to create user with email: ${emailController.text.trim()}");
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text,
       );
-      String userId = userCredential.user!.uid;
 
-      // Store user details in 'employee' document under 'roles' collection
-      await _firestore.collection('roles').doc('employee').collection('employees').doc(userId).set({
-        'username': _nameController.text.trim(),
-        'email': _emailController.text.trim(),
+      // Logging user ID
+      String userId = userCredential.user!.uid;
+      print("User created with UID: $userId");
+
+      bool success = await firestoreService.addUidToEmployer(userId);
+
+      // Logging Firestore addition success
+      print("Added UID to employer: $success");
+
+      // Store user details in 'employer' document under 'roles' collection
+      await _firestore.collection('roles').doc('employer').collection('employers').doc(userId).set({
+        'username': usernameController.text.trim(),
+        'email': emailController.text.trim(),
         // Add more fields as needed
       });
 
+      // Logging Firestore user details success
+      print("Stored user details in Firestore");
+
+      await _auth.signOut();
       Fluttertoast.showToast(msg: 'Registration Successful');
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Services()),
+        MaterialPageRoute(builder: (context) => login_check()),
       );
     } on FirebaseAuthException catch (e) {
+      // Logging specific FirebaseAuthException
+      print("FirebaseAuthException: ${e.code} - ${e.message}");
       if (e.code == 'weak-password') {
-        Fluttertoast.showToast(msg: 'The password provided is too weak');
+        showToast('The password provided is too weak');
       } else if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(msg: 'The account already exists for that email');
+        showToast('The account already exists for that email');
       } else {
-        Fluttertoast.showToast(msg: 'Registration failed: ${e.message}');
+        showToast('Signup failed: ${e.message}');
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Registration failed: ${e.toString()}');
+      // Logging general exception
+      print("Exception: ${e.toString()}");
+      showToast('Signup failed: ${e.toString()}');
     }
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -109,7 +140,7 @@ class _Labour_RegState extends State<Labour_Reg> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Name",
+                      "Company Name",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -118,9 +149,9 @@ class _Labour_RegState extends State<Labour_Reg> {
                       textAlign: TextAlign.end,
                     ),
                     TextField(
-                      controller: _nameController,
+                      controller: usernameController,
                       decoration: InputDecoration(
-                        hintText: "Name",
+                        hintText: "Company Name",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
@@ -144,14 +175,14 @@ class _Labour_RegState extends State<Labour_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: _emailController,
+                      controller: emailController,
                       decoration: InputDecoration(
-                        hintText: "Email",
+                        hintText: "Enter Email",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 1.0,
+                            width: 5.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),
@@ -170,15 +201,15 @@ class _Labour_RegState extends State<Labour_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: _passwordController,
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: "Enter password",
+                        hintText: "Enter Password",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 1.0,
+                            width: 5.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),
@@ -197,19 +228,19 @@ class _Labour_RegState extends State<Labour_Reg> {
                       textAlign: TextAlign.start,
                     ),
                     TextField(
-                      controller: _confirmPasswordController,
+                      controller: confirmPasswordController,
                       obscureText: true,
                       onChanged: (value) {
                         checkPasswordMatch();
                       },
                       decoration: InputDecoration(
-                        hintText: "Confirm password",
+                        hintText: "Confirm Password",
                         errorText: passwordsMatch ? null : 'Passwords do not match',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(
                             color: Colors.black,
-                            width: 1.0,
+                            width: 5.0,
                           ),
                         ),
                         fillColor: Colors.green.withOpacity(0.1),

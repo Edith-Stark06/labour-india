@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/Employer.dart';
-import 'package:ngo/RegisterPage.dart';
-import 'package:ngo/Employee.dart';
+import 'package:ngo/frontend_services/auth/Employee.dart';
+
+import 'auth/Employer.dart';
+import 'RegisterPage.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -47,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                 text: 'Employer',
                 iconPath: 'assets/images/peo.jpg',
                 onPressed: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Employer(),

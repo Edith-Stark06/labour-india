@@ -2,48 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Forgot_Pass.dart';
-import 'RegisterPage.dart';
-import 'Company_services.dart';
+import 'package:ngo/backend_services/login_check.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Employer extends StatefulWidget {
+
+import '../../backend_services/FirestoreService.dart';
+import '../Forgot_Pass.dart';
+import '../employee/Labour_services.dart';
+import '../RegisterPage.dart';
+
+class Employee extends StatefulWidget {
   @override
-  _EmployerState createState() => _EmployerState();
+  _EmployeeState createState() => _EmployeeState();
 }
 
-class _EmployerState extends State<Employer> {
+class _EmployeeState extends State<Employee> {
+
+  final firestoreService = FirestoreService();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void showToast(BuildContext context, String message) {
+  void showToast(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Future<void> signInWithEmailAndPassword(BuildContext context) async {
+  Future<void> signInWithEmailAndPassword() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      showToast(context, 'Please enter both email and password');
+      showToast('Please enter both email and password');
       return;
     }
 
     try {
-      // Sign in with Firebase Authentication using provided email and password
+      // Sign in with Firebase Authentication using the provided email and password
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
-      // Check if the user is an employer
+      // Check if the user is an employee
       String userId = userCredential.user!.uid;
-      bool isEmployer = await checkIfEmployer(userId);
+      //bool isEmployee = await checkIfEmployee(userId);
+      bool isEmployee = await firestoreService.isEmployee(userId);
 
-      if (isEmployer) {
-        showToast(context, 'Login successfully');
+      if (isEmployee) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userRole', 'employee');
+        showToast('Login successful');
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CompServices()),
+          MaterialPageRoute(builder: (context) => login_check()),
         );
       } else {
-        showToast(context, 'You are not a valid user');
+        showToast('You are not a valid user');
         await FirebaseAuth.instance.signOut(); // Sign out if not a valid user
       }
     } on FirebaseAuthException catch (e) {
@@ -57,25 +68,25 @@ class _EmployerState extends State<Employer> {
           fontSize: 16.0,
         );
       } else {
-        showToast(context, 'An error occurred: ${e.message}');
+        showToast('An error occurred: ${e.message}');
       }
     } catch (e) {
-      showToast(context, 'Login failed: $e');
+      showToast('Login failed: $e');
     }
   }
 
-  Future<bool> checkIfEmployer(String userId) async {
+  Future<bool> checkIfEmployee(String userId) async {
     try {
-      DocumentSnapshot employerSnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot employeeSnapshot = await FirebaseFirestore.instance
           .collection('roles')
-          .doc('employer')
-          .collection('employers')
+          .doc('employee')
+          .collection('employees')
           .doc(userId)
           .get();
 
-      return employerSnapshot.exists;
+      return employeeSnapshot.exists;
     } catch (e) {
-      print('Error checking employer status: $e');
+      print('Error checking employee status: $e');
       return false;
     }
   }
@@ -93,22 +104,22 @@ class _EmployerState extends State<Employer> {
               children: <Widget>[
                 const SizedBox(height: 10),
                 Container(
-                  height: 140,
-                  width: 170,
+                  height: 150,
+                  width: 180,
                   child: Image.asset('assets/images/laborindia.jpg'),
                 ),
                 Container(
-                  height: 110,
-                  width: 160,
-                  child: Image.asset('assets/images/oneper.jpg'),
+                  height: 120,
+                  width: 150,
+                  child: Image.asset('assets/images/peo.jpg'),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Text(
-                  "Employer",
+                  "Labour",
                   style: TextStyle(fontSize: 30, color: Colors.green[700]),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 Text(
                   "Email",
                   style: TextStyle(
@@ -118,7 +129,7 @@ class _EmployerState extends State<Employer> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -149,7 +160,7 @@ class _EmployerState extends State<Employer> {
                     prefixIcon: const Icon(Icons.email),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Text(
                   "Password",
                   style: TextStyle(
@@ -159,7 +170,7 @@ class _EmployerState extends State<Employer> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 8),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -199,7 +210,9 @@ class _EmployerState extends State<Employer> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Forgot_Pass()),
+                          MaterialPageRoute(
+                            builder: (context) => Forgot_Pass(),
+                          ),
                         );
                       },
                       child: Text(
@@ -219,7 +232,7 @@ class _EmployerState extends State<Employer> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ElevatedButton(
-                        onPressed: () => signInWithEmailAndPassword(context),
+                        onPressed: signInWithEmailAndPassword,
                         child: const Text(
                           "Log In",
                           style: TextStyle(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ngo/Apply_success.dart';
+import 'Apply_success.dart';
 import 'job_success.dart';
 
 class IndividualJob extends StatefulWidget {
@@ -55,7 +55,7 @@ class _IndividualJobState extends State<IndividualJob> {
 
     await companyDoc.set({
       'applied': {
-        widget.timestampKey: FieldValue.arrayUnion([userUid])
+        widget.timestampKey: FieldValue.arrayUnion([userDoc])
       }
     }, SetOptions(merge: true));
 

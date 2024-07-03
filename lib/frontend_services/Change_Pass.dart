@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/Change_Pass.dart';
-import 'package:ngo/Employee.dart';
-import 'package:ngo/Labour_services.dart';
 
-class Verifyotppage extends StatefulWidget {
+import 'LoginScreen.dart';
+
+
+class Change_Pass extends StatefulWidget {
   @override
-  _VerifyotppageState createState() => _VerifyotppageState();
+  _Change_PassState createState() => _Change_PassState();
 }
 
-class _VerifyotppageState extends State<Verifyotppage> {
+class _Change_PassState extends State<Change_Pass> {
 
 
   @override
@@ -31,16 +31,59 @@ class _VerifyotppageState extends State<Verifyotppage> {
                   width: 170,
                   child: Image.asset('assets/images/laborindia.jpg'),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 Text(
-                  "OTP Verify",
+                  "Change Password",
                   style: TextStyle(fontSize: 30, color: Colors.green[700]),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 50),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
+
                 Text(
-                  "Enter your OTP",
+                  "NewPassword",
+                  style: TextStyle(
+                    fontSize: 24, // Increase font size
+                    color: Colors.black, // Set text color to black
+                    fontWeight: FontWeight.bold, // Make the text bold
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+
+                const SizedBox(height: 10),
+                TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    hintText: "password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Colors.black, // Set the border color
+                        width: 1.0, // Set the border width
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Colors.black, // Set the border color
+                        width: 1.0, // Set the border width
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Colors.green
+                        , // Set the border color when focused
+                        width: 1.0, // Set the border width when focused
+                      ),
+                    ),
+                    fillColor: Colors.white.withOpacity(0.1),
+                    filled: false,
+                    prefixIcon: const Icon(Icons.lock),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  "Confirm Password",
                   style: TextStyle(
                     fontSize: 24, // Increase font size
                     color: Colors.black, // Set text color to black
@@ -52,7 +95,7 @@ class _VerifyotppageState extends State<Verifyotppage> {
                 TextField(
                   controller: usernameController,
                   decoration: InputDecoration(
-                    hintText: "OTP",
+                    hintText: "password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
@@ -90,12 +133,12 @@ class _VerifyotppageState extends State<Verifyotppage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Change_Pass(),
+                          builder: (context) => LoginScreen(),
                         ),
                       );
                     },
                     child: const Text(
-                      "Verify",
+                      "Change",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
