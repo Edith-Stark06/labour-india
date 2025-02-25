@@ -20,19 +20,18 @@ class CompServices extends StatelessWidget {
     'Apply to easy\nGovernment schemes'
   ];
   final List<String> headings = [
-    'Heading Line 1 for Card 1\nHeading Line 2 for Card 1',
-    'Heading Line 1 for Card 2\nHeading Line 2 for Card 2',
-    'Heading Line 1 for Card 3\nHeading Line 2 for Card 3',
-    'Heading Line 1 for Card 4\nHeading Line 2 for Card 4',
+    'Promote Transparency ',
+    'Ensure Compliance',
+    'Facilitate Communication',
+    'Easy Job Apply',
   ];
 
   final List<String> descriptions = [
-    'This is a description text for Card 1 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 2 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 3 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 4 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
+    'Ensure clear and open communication in all processes to build trust and foster accountability, Make information accessible .',
+    ' Adhere to industry regulations and internal policies to maintain legal standards and operational integrity, Regular audits .',
+    ' Encourage seamless information exchange by implementing reliable communication channels and tools,Foster an environment .',
+    'Simplify the application process with user-friendly interfaces and clear instructions. Enable quick and efficient job applications .',
   ];
-
   get selectedRole => RegisterPage();
 
   @override
@@ -41,7 +40,7 @@ class CompServices extends StatelessWidget {
       appBar: AppBar(
         title: Center(
           child: Image.asset(
-            'assets/images/laborindia.jpg',  // Replace with your image path
+            'assets/images/Logo.png',  // Replace with your image path
             height: 100.0,
           ),
         ),
@@ -69,6 +68,28 @@ class CompServices extends StatelessWidget {
               ),
             ),
             ListTile(
+              leading: const Icon(Icons.contact_page),
+              title: const Text('comp_Profile'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ComProfile()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.contact_page),
+              title: const Text('Post jobs'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const JobPosting()),
+                );
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.info),
               title: const Text('About Us'),
               onTap: () {
@@ -88,29 +109,6 @@ class CompServices extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => login_check()),
-                );
-              },
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.contact_page),
-              title: const Text('Post jobs'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const JobPosting()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.contact_page),
-              title: const Text('comp_Profile'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ComProfile()),
                 );
               },
             ),
@@ -172,7 +170,7 @@ class CompServices extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: 400.0,
+                  height: 350.0,
                   autoPlay: true,
                   enlargeCenterPage: true,
                 ),
@@ -249,96 +247,7 @@ class CompServices extends StatelessWidget {
                         height: 100,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Left and right parts with text
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: _buildTextColumn(
-                            "Employees",
-                            [
-                              "Salary info",
-                              "Fairness",
-                              "Trust",
-                              "Future Plan"
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: _buildTextColumn(
-                            "Employers",
-                            [
-                              "Salary",
-                              "Transparency",
-                              "Compliance",
-                              "Communication"
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: _buildTextColumn(
-                            "Company",
-                            [
-                              "About Us",
-                              "Services",
-                              "Contact Us",
-                              "Help",
-                              "Support"
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: _buildTextColumn(
-                            "Legal",
-                            [
-                              "Terms & Conditions",
-                              "Privacy Policy",
-                              "Refund/Cancellation"
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    // Features section
-                    _buildTextColumn(
-                      "Features",
-                      [
-                        "Salary Management",
-                        "Transparency Tools",
-                        "Compliance Tracking",
-                        "Communication Hub",
-                        "Security Measures"
-                      ],
-                      isCentered: true,
-                    ),
-                    const SizedBox(height: 20),
-                    // Divider line
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      height: 0.5,
-                      color: const Color(0xFF766E6E),
-                    ),
-                    const SizedBox(height: 20),
-                    // Logo
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Image.asset(
-                        "assets/images/Logo.png",
-                        width: 80,
-                        height: 70,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                    // Features sectio
                     // Description
                     const Text(
                       "Get end-to-end visibility of your employees with top-notch staff management and payment software for your use",
@@ -351,37 +260,6 @@ class CompServices extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     // Social media handles
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildSocialMediaIcon("assets/images/facebook_logo.png"),
-                        const SizedBox(width: 10),
-                        _buildSocialMediaIcon("assets/images/insta_logo.png"),
-                        const SizedBox(width: 10),
-                        _buildSocialMediaIcon("assets/images/linkedin_logo.png"),
-                        const SizedBox(width: 10),
-                        _buildSocialMediaIcon("assets/images/youtube_logo.png"),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    // App store logos
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/apple_appstore.png",
-                          width: 145,
-                          height: 45,
-                        ),
-                        const SizedBox(width: 10),
-                        Image.asset(
-                          "assets/images/google_playstore.png",
-                          width: 145,
-                          height: 45,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
                     // Contact details
                     Align(
                       alignment: Alignment.centerLeft,
@@ -397,11 +275,11 @@ class CompServices extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          _buildContactDetailRow(Icons.phone, "+91 987 654 3210"),
+                          _buildContactDetailRow(Icons.phone, "+91 8926726726"),
                           const SizedBox(height: 10),
-                          _buildContactDetailRow(Icons.mail, "transparentwage@gmail.com"),
+                          _buildContactDetailRow(Icons.mail, "nasctelangana@gmail.com "),
                           const SizedBox(height: 5),
-                          _buildContactDetailRow(Icons.location_on, "Plot 25, Sector 07, Ambattur Industrial Estate, Ambattur, Chennai - 600110"),
+                          _buildContactDetailRow(Icons.location_on, "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
                         ],
                       ),
                     ),
@@ -424,7 +302,7 @@ class CompServices extends StatelessWidget {
                         ),
                         SizedBox(width: 5),
                         Text(
-                          "2024 by Varshini Technology Private Limited. All rights reserved",
+                          "2024 by ALTRUISTY. All rights reserved",
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,

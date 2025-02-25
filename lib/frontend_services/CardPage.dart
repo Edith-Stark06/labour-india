@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'FindJobs.dart';
 import 'IndividualJob.dart';
@@ -34,10 +33,12 @@ class _CardPageState extends State<CardPage> {
         Map<String, dynamic> postedJobs = data['posted Jobs'] ?? {};
 
         postedJobs.forEach((key, value) {
-          Map<String, String> jobData = Map<String, String>.from(value);
-          jobData['timestamp'] = key;
-          jobData['companyUid'] = companyUid;  // Add the company UID to each job posting
-          tempPostings.add(jobData);
+          if (value is Map<String, dynamic>) {
+            Map<String, String> jobData = value.map((k, v) => MapEntry(k, v.toString()));
+            jobData['timestamp'] = key;
+            jobData['companyUid'] = companyUid;  // Add the company UID to each job posting
+            tempPostings.add(jobData);
+          }
         });
       }
 
@@ -52,11 +53,20 @@ class _CardPageState extends State<CardPage> {
         errorMessage = e.toString();
         isLoading = false;
       });
+      print('Error fetching job postings: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (errorMessage != null) {
+      return Center(child: Text('Error: $errorMessage'));
+    }
+
     List<Widget> jobCards = jobPostings.map((job) {
       return Card(
         shape: RoundedRectangleBorder(
@@ -70,10 +80,10 @@ class _CardPageState extends State<CardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('assets/images/company1bg.png',height: 100,width: double.infinity,fit: BoxFit.cover,),
+              Image.asset('assets/images/company1bg.png', height: 100, width: double.infinity, fit: BoxFit.cover),
               SizedBox(height: 10),
               Text(
-                job['companyName']!,
+                job['companyName'] ?? 'No Company Name',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
@@ -81,18 +91,18 @@ class _CardPageState extends State<CardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    job['location']!,
+                    job['location'] ?? 'No Location',
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "${job['noOfDays']} days",
+                    "${job['noOfDays'] ?? '0'} days",
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),
               SizedBox(height: 5),
               Text(
-                "Skills: ${job['skills']}",
+                "Skills: ${job['skills'] ?? 'No Skills'}",
                 style: TextStyle(fontSize: 16),
               ),
               Spacer(),
@@ -104,8 +114,8 @@ class _CardPageState extends State<CardPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => IndividualJob(
-                          companyUid: job['companyUid']!,
-                          timestampKey: job['timestamp']!,
+                          companyUid: job['companyUid'] ?? 'No UID',
+                          timestampKey: job['timestamp'] ?? 'No Timestamp',
                         ),
                       ),
                     );
@@ -119,8 +129,6 @@ class _CardPageState extends State<CardPage> {
       );
     }).toList();
 
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : FindJobs(jobCards: jobCards);
+    return FindJobs(jobCards: jobCards);
   }
 }

@@ -18,7 +18,9 @@ class _JobPostingState extends State<JobPosting> {
   final TextEditingController _SkillsController = TextEditingController();
   final TextEditingController _NoofdaysController = TextEditingController();
   final TextEditingController _JobdescritptionController = TextEditingController();
-  final TextEditingController _otherDetailsController = TextEditingController();
+  final TextEditingController _wagesController = TextEditingController();
+  final TextEditingController _employeesController = TextEditingController();
+  //  final TextEditingController _otherDetailsController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,7 +30,9 @@ class _JobPostingState extends State<JobPosting> {
     _LocationController.dispose();
     _SkillsController.dispose();
     _NoofdaysController.dispose();
-    _otherDetailsController.dispose();
+    _employeesController.dispose();
+    _wagesController.dispose();
+    //_otherDetailsController.dispose();
     super.dispose();
   }
 
@@ -44,25 +48,28 @@ class _JobPostingState extends State<JobPosting> {
         _SkillsController.text.isEmpty ||
         _NoofdaysController.text.isEmpty ||
         _JobdescritptionController.text.isEmpty ||
-        _otherDetailsController.text.isEmpty) {
+        _employeesController.text.isEmpty ||
+        _wagesController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all fields')),
       );
       return;
     }
 
-    Map<String, String> newJob = {
+    Map<String, dynamic> newJob = {
       'companyName': _companynameController.text,
       'location': _LocationController.text,
       'skills': _SkillsController.text,
       'noOfDays': _NoofdaysController.text,
       'jobDescription': _JobdescritptionController.text,
-      'otherDetails': _otherDetailsController.text,
+      'wages': _wagesController.text,
+      'noOfEmployees': _employeesController.text,
     };
-
     String timestampKey = DateTime.now().toIso8601String();
     DocumentReference companyDoc = firestore.collection('company_details').doc(uid);
     DocumentReference postDoc = firestore.collection('job_posts').doc(uid);
+
+    CollectionReference jobsCollection = firestore.collection('jobs'); // Reference to 'jobs' collection
 
     try {
       await postDoc.set({
@@ -73,12 +80,23 @@ class _JobPostingState extends State<JobPosting> {
         'applied': {timestampKey: []},
       }, SetOptions(merge: true));
 
+      DocumentReference jobPostDoc = await jobsCollection.add(newJob); // Add new job document under 'jobs' collection
+
+      // Optionally, associate this job with the company in 'company_details'
+      await companyDoc.collection('jobs').doc(jobPostDoc.id).set({
+        'companyName': _companynameController.text,
+        // Add other company related fields if needed
+      });
+
+
+      // Clear controllers after successful job post
       _companynameController.clear();
       _LocationController.clear();
       _SkillsController.clear();
       _NoofdaysController.clear();
       _JobdescritptionController.clear();
-      _otherDetailsController.clear();
+      _wagesController.clear();
+      _employeesController.clear();
 
       if (mounted) {
         Navigator.pushReplacement(
@@ -97,7 +115,7 @@ class _JobPostingState extends State<JobPosting> {
   Future<bool> _onWillPop() async {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => CompServices()), // Ensure CompServices is the correct previous page
+      MaterialPageRoute(builder: (context) => CompServices()),
     );
     return Future.value(false); // Prevent default back navigation
   }
@@ -245,6 +263,58 @@ class _JobPostingState extends State<JobPosting> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
+                      "Wages per day",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    TextField(
+                      controller: _wagesController,
+                      decoration: InputDecoration(
+                        hintText: "wages per day",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 5.0,
+                          ),
+                        ),
+                        fillColor: Colors.green.withOpacity(0.1),
+                        filled: false,
+                        prefixIcon: const Icon(Icons.today_sharp),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Required Labours",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    TextField(
+                      controller: _employeesController,
+                      decoration: InputDecoration(
+                        hintText: "Required labours",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 5.0,
+                          ),
+                        ),
+                        fillColor: Colors.green.withOpacity(0.1),
+                        filled: false,
+                        prefixIcon: const Icon(Icons.today_sharp),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
                       "Job Description",
                       style: TextStyle(
                         fontSize: 20,
@@ -253,6 +323,7 @@ class _JobPostingState extends State<JobPosting> {
                       ),
                       textAlign: TextAlign.start,
                     ),
+
                     Container(
                       width: double.infinity,
                       height: 150.0,
@@ -274,40 +345,18 @@ class _JobPostingState extends State<JobPosting> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Other Details",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 150.0,
-                      child: TextField(
-                        controller: _otherDetailsController,
-                        maxLines: 100,
-                        decoration: InputDecoration(
-                          hintText: "Other details",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: const BorderSide(
-                              color: Colors.black,
-                              width: 1.0,
-                            ),
-                          ),
-                          fillColor: Colors.green.withOpacity(0.1),
-                          filled: false,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
                         onPressed: post_job,
-                        child: const Text("Post Job"),
+                        child:  Text(
+                        "Post Job",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        padding: EdgeInsets.symmetric(vertical: 14,horizontal: 40),
+                        backgroundColor: Colors.green,
+                      ),
                       ),
                     ),
                   ],

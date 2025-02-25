@@ -8,12 +8,12 @@ import '../RegisterPage.dart';  // Ensure this import is correct
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-class Labour_Reg extends StatefulWidget {
+class employee_Reg extends StatefulWidget {
   @override
-  _Labour_RegState createState() => _Labour_RegState();
+  _employee_RegState createState() => _employee_RegState();
 }
 
-class _Labour_RegState extends State<Labour_Reg> {
+class _employee_RegState extends State<employee_Reg> {
 
   final firestoreService = FirestoreService();
 
@@ -44,12 +44,12 @@ class _Labour_RegState extends State<Labour_Reg> {
         password: _passwordController.text,
       );
       String userId = userCredential.user!.uid;
-      bool success = await firestoreService.addUidToEmployee(userId);
+      bool success = await firestoreService.addUidToemployee(userId);
 
 
       // Store user details in 'employee' document under 'roles' collection
       await _firestore.collection('roles').doc('employee').collection('employees').doc(userId).set({
-        'username': _nameController.text.trim(),
+        'phone number': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         // Add more fields as needed
       });
@@ -119,7 +119,7 @@ class _Labour_RegState extends State<Labour_Reg> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Name",
+                      "phone number",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -130,7 +130,7 @@ class _Labour_RegState extends State<Labour_Reg> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        hintText: "Name",
+                        hintText: "phone number",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(

@@ -4,19 +4,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ngo/backend_services/login_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 import '../../backend_services/FirestoreService.dart';
 import '../Forgot_Pass.dart';
-import '../employee/Labour_services.dart';
 import '../RegisterPage.dart';
 
-class Employee extends StatefulWidget {
+class employee extends StatefulWidget {
   @override
-  _EmployeeState createState() => _EmployeeState();
+  _employeeState createState() => _employeeState();
 }
 
-class _EmployeeState extends State<Employee> {
+class _employeeState extends State<employee> {
 
   final firestoreService = FirestoreService();
 
@@ -42,10 +39,10 @@ class _EmployeeState extends State<Employee> {
 
       // Check if the user is an employee
       String userId = userCredential.user!.uid;
-      //bool isEmployee = await checkIfEmployee(userId);
-      bool isEmployee = await firestoreService.isEmployee(userId);
+      //bool isemployee = await checkIfemployee(userId);
+      bool isemployee = await firestoreService.isemployee(userId);
 
-      if (isEmployee) {
+      if (isemployee) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userRole', 'employee');
         showToast('Login successful');
@@ -75,7 +72,7 @@ class _EmployeeState extends State<Employee> {
     }
   }
 
-  Future<bool> checkIfEmployee(String userId) async {
+  Future<bool> checkIfemployee(String userId) async {
     try {
       DocumentSnapshot employeeSnapshot = await FirebaseFirestore.instance
           .collection('roles')

@@ -34,7 +34,7 @@ class AboutUsPage extends StatelessWidget {
     Image.asset('assets/images/peo.jpg', width: 134, height: 134),
     SizedBox(height: 10),
     Text(
-    'At LabourIndia, we believe in a world where every worker is treated fairly and paid promptly for their hard work. Our mission is to revolutionize the daily wage payment system, eliminating middlemen and ensuring transparency in every transaction.',
+    'At employeeIndia, we believe in a world where every worker is treated fairly and paid promptly for their hard work. Our mission is to revolutionize the daily wage payment system, eliminating middlemen and ensuring transparency in every transaction.',
     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color(0xFF766E6E)),
     textAlign: TextAlign.center,
     ),
@@ -81,7 +81,7 @@ class AboutUsPage extends StatelessWidget {
     Image.asset('assets/images/peo.jpg', width: 155, height: 118),
     SizedBox(height: 10),
     Text(
-    'LabourIndia was founded by a group of passionate individuals who witnessed the challenges faced by workers in receiving fair wages. Fueled by the desire to create positive change, we set out to develop a solution that would empower workers and promote transparency in wage payments.',
+    'employeeIndia was founded by a group of passionate individuals who witnessed the challenges faced by workers in receiving fair wages. Fueled by the desire to create positive change, we set out to develop a solution that would empower workers and promote transparency in wage payments.',
     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color(0xFF766E6E)),
     textAlign: TextAlign.center,
     ),
@@ -142,7 +142,7 @@ class AboutUsPage extends StatelessWidget {
           Icon(Icons.phone, color: Colors.green),
           SizedBox(width: 5),
           Text(
-            '+91 987 654 3210', // Update with your contact number
+            '+91 8926726726 ', // Update with your contact number
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w400,
@@ -158,7 +158,7 @@ class AboutUsPage extends StatelessWidget {
           Icon(Icons.email, color: Colors.green),
           SizedBox(width: 5),
           Text(
-            'transparentwage@gmail.com', // Update with your email
+            ' nasctelangana@gmail.com ', // Update with your email
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w400,
@@ -177,67 +177,20 @@ class AboutUsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Plot 25, Sector 07, Ambattur Industrial Estate,', // Update with your address
+                '12-13-479, Street No: 1, Tarnaka, Hyderabad-500017,', // Update with your address
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                   color: Color(0xFF766E6E),
                 ),
               ),
-              Text(
-                'Ambattur, Chennai - 600110', // Update with your address
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF766E6E),
-                ),
-              ),
+
             ],
           ),
         ],
       ),
       SizedBox(height: 20),
-      Text(
-        'For business inquiries or other related issues, contact us:',
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        textAlign: TextAlign.start,
-      ),
-      SizedBox(height: 10),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(Icons.phone, color: Colors.green),
-          SizedBox(width: 5),
-          Text(
-            '+91 987 654 3210', // Update with your contact number
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF766E6E),
-            ),
-          ),
-        ],
-      ),
-      SizedBox(height: 10),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(Icons.email, color: Colors.green),
-          SizedBox(width: 5),
-          Text(
-            'transparentwage@gmail.com', // Update with your email
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF766E6E),
-            ),
-          ),
-        ],
-      ),
+
     ],
     ),
     ),

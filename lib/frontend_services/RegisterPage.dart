@@ -18,11 +18,11 @@ class _RegisterPageState extends State<RegisterPage> {
   void _createRoleCollection() async {
     try {
 
-      if (selectedRole == 'Employee') {
+      if (selectedRole == 'employee') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Labour_Reg(),
+            builder: (context) => employee_Reg(),
           ),
         );
       } else if (selectedRole == 'Employer') {
@@ -88,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 DropdownButtonFormField<String>(
                   value: selectedRole,
                   decoration: InputDecoration(
-                    hintText: "Employer/Employee",
+                    hintText: "Employer/labour",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
@@ -116,8 +116,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   items: [
                     DropdownMenuItem(
-                      value: 'Employee',
-                      child: Text('Employee'),
+                      value: 'employee',
+                      child: Text('labour'),
                     ),
                     DropdownMenuItem(
                       value: 'Employer',

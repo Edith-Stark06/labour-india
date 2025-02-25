@@ -27,7 +27,7 @@ class ContactUsPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildTextColumn(
-                      "Employees",
+                      "employees",
                       [
                         "Salary info",
                         "Fairness",

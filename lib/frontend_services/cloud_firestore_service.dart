@@ -9,7 +9,7 @@ class FirestoreService {
     required String password,
   }) async {
     try {
-      await _db.collection('Labour').add({
+      await _db.collection('employee').add({
         'name': name,
         'email': email,
         'password': password,
@@ -23,7 +23,7 @@ class FirestoreService {
   Future<DocumentSnapshot?> getUserByEmail(String email) async {
     try {
       QuerySnapshot querySnapshot = await _db
-          .collection('Labour')
+          .collection('employee')
           .where('email', isEqualTo: email)
           .limit(1)
           .get();

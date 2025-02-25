@@ -180,7 +180,7 @@ class jobCard extends StatelessWidget {
                   backgroundColor: Colors.grey[200],
                 ),
                 Chip(
-                  label: Text('Labour'),
+                  label: Text('employee'),
                   backgroundColor: Colors.grey[200],
                 ),
                 Chip(

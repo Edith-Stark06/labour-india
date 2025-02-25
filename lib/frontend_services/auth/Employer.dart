@@ -9,7 +9,6 @@ import '../Forgot_Pass.dart';
 import '../RegisterPage.dart';
 import '../employer/Comp_Services.dart';
 
-
 class Employer extends StatefulWidget {
   @override
   _EmployerState createState() => _EmployerState();
@@ -22,50 +21,35 @@ class _EmployerState extends State<Employer> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void showToast(BuildContext context, String message) {
-    // Check if the context has an associated Scaffold
-    if (ScaffoldMessenger.maybeOf(context) != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-    } else {
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+  void showToast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Future<void> signInWithEmailAndPassword(BuildContext context) async {
+  Future<void> signInWithEmailAndPassword() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      showToast(context, 'Please enter both email and password');
+      showToast('Please enter both email and password');
       return;
     }
 
     try {
-      // Sign in with Firebase Authentication using provided email and password
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
-      // Check if the user is an employer
       String userId = userCredential.user!.uid;
-      //bool isEmployer = await checkIfEmployer(userId);
       bool isEmployer = await firestoreService.isEmployer(userId);
 
       if (isEmployer) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userRole', 'employer');
-        showToast(context, 'Login successfully');
+        showToast('Login successful');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => login_check()),
         );
       } else {
-        showToast(context, 'You are not a valid user');
+        showToast('You are not a valid user');
         await FirebaseAuth.instance.signOut(); // Sign out if not a valid user
       }
     } on FirebaseAuthException catch (e) {
@@ -79,10 +63,10 @@ class _EmployerState extends State<Employer> {
           fontSize: 16.0,
         );
       } else {
-        showToast(context, 'An error occurred: ${e.message}');
+        showToast('An error occurred: ${e.message}');
       }
     } catch (e) {
-      showToast(context, 'Login failed: $e');
+      showToast('Login failed: $e');
     }
   }
 
@@ -241,7 +225,7 @@ class _EmployerState extends State<Employer> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ElevatedButton(
-                        onPressed: () => signInWithEmailAndPassword(context),
+                        onPressed: signInWithEmailAndPassword,
                         child: const Text(
                           "Log In",
                           style: TextStyle(

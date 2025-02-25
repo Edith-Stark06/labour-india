@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/frontend_services/auth/Employee.dart';
-
+import 'auth/Employee.dart';
 import 'auth/Employer.dart';
 import 'RegisterPage.dart';
 
@@ -11,7 +10,7 @@ class LoginScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white, // Set the background color of the entire screen to black
+      backgroundColor: Colors.white, // Set the background color of the entire screen to white
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(20.0), // Adjust padding for better spacing
@@ -22,7 +21,7 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  icon: Icon(Icons.close, color: Colors.white),
+                  icon: Icon(Icons.close, color: Colors.black),
                   onPressed: () {
                     // Handle close action
                   },
@@ -58,13 +57,13 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 40),
               LoginButton(
-                text: 'Employee',
+                text: 'Labour',
                 iconPath: 'assets/images/peo.jpg',
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Employee(),
+                      builder: (context) => employee(), // Changed to match class naming convention
                     ),
                   );
                 },
@@ -98,6 +97,26 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+             SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: screenSize.width * 0.04, // Adjust font size based on screen size
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(width: 5), // Add spacing between text and image
+                  //Image.asset(
+                    //'assets/images/alt.png', // Replace with your company logo path
+                    //height: screenSize.height * 0.08, // Adjust image height based on screen size
+                  //),
+                ],
               ),
             ],
           ),

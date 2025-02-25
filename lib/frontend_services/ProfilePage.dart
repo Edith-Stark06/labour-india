@@ -13,11 +13,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String username = '';
   String email = '';
   String? addressPermanent;
-  String? addressTemporary;
-  String? aadharNumber;
-  String? bankAccountNumber;
-  String? ifscCode;
-  String? bankName;
+  String? mobile;
 
   @override
   void initState() {
@@ -26,26 +22,27 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> getUserData() async {
-    User? user = FirebaseAuth.instance.currentUser;
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance
-          .collection('labour_details')
-          .doc(user.uid)
-          .get();
+      if (user != null) {
+        DocumentSnapshot userData = await FirebaseFirestore.instance
+            .collection('employee_details')
+            .doc(user.uid)
+            .get();
 
-      if (userData.exists) {
-        setState(() {
-          email = user.email ?? '';
-          username = userData['username'] ?? '';
-          addressPermanent = userData['addressPermanent'];
-          addressTemporary = userData['addressTemporary'];
-          aadharNumber = userData['aadharNumber'];
-          bankAccountNumber = userData['bankAccountNumber'];
-          ifscCode = userData['ifscCode'];
-          bankName = userData['bankName'];
-        });
+        if (userData.exists) {
+          setState(() {
+            email = user.email ?? '';
+            username = userData['username'] ?? '';
+            addressPermanent = userData['addressPermanent'];
+            mobile = userData['mobile number'];
+          });
+        }
       }
+    } catch (e) {
+      // Handle error here, possibly show a message to the user
+      print('Error fetching user data: $e');
     }
   }
 
@@ -54,24 +51,16 @@ class _ProfilePageState extends State<ProfilePage> {
       username = newProfileData['username'] ?? username;
       email = newProfileData['email'] ?? email;
       addressPermanent = newProfileData['addressPermanent'] ?? addressPermanent;
-      addressTemporary = newProfileData['addressTemporary'] ?? addressTemporary;
-      aadharNumber = newProfileData['aadharNumber'] ?? aadharNumber;
-      bankAccountNumber = newProfileData['bankAccountNumber'] ?? bankAccountNumber;
-      ifscCode = newProfileData['ifscCode'] ?? ifscCode;
-      bankName = newProfileData['bankName'] ?? bankName;
+      mobile = newProfileData['mobile number'] ?? mobile;
     });
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseFirestore.instance.collection('labour_details').doc(user.uid).set({
+      await FirebaseFirestore.instance.collection('employee_details').doc(user.uid).set({
         'username': username,
         'email': email,
         'addressPermanent': addressPermanent,
-        'addressTemporary': addressTemporary,
-        'aadharNumber': aadharNumber,
-        'bankAccountNumber': bankAccountNumber,
-        'ifscCode': ifscCode,
-        'bankName': bankName,
+        'mobile number': mobile,
       });
     }
   }
@@ -96,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "Registration",
+                "Profile",
                 style: TextStyle(fontSize: 30, color: Colors.green[700]),
                 textAlign: TextAlign.center,
               ),
@@ -108,6 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 20),
               Text(username, style: TextStyle(fontSize: 20)),
               Text(email, style: TextStyle(fontSize: 16)),
+              if (mobile != null) Text(mobile!, style: TextStyle(fontSize: 16)),
               SizedBox(height: 20),
               if (addressPermanent != null)
                 Padding(
@@ -118,71 +108,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         TextSpan(text: 'Permanent Address:\n', style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text: addressPermanent),
-                      ],
-                    ),
-                  ),
-                ),
-              if (addressTemporary != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: [
-                        TextSpan(text: 'Temporary Address:\n', style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: addressTemporary),
-                      ],
-                    ),
-                  ),
-                ),
-              if (aadharNumber != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: [
-                        TextSpan(text: 'Aadhar Number: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: aadharNumber),
-                      ],
-                    ),
-                  ),
-                ),
-              if (bankAccountNumber != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: [
-                        TextSpan(text: 'Bank Account Number: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: bankAccountNumber),
-                      ],
-                    ),
-                  ),
-                ),
-              if (ifscCode != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: [
-                        TextSpan(text: 'IFSC Code: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: ifscCode),
-                      ],
-                    ),
-                  ),
-                ),
-              if (bankName != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: [
-                        TextSpan(text: 'Bank Name: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: bankName),
                       ],
                     ),
                   ),
@@ -200,11 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         username: username,
                         email: email,
                         addressPermanent: addressPermanent,
-                        addressTemporary: addressTemporary,
-                        aadharNumber: aadharNumber,
-                        bankAccountNumber: bankAccountNumber,
-                        ifscCode: ifscCode,
-                        bankName: bankName,
+                        mobilenumber: mobile,
                       ),
                     ),
                   );

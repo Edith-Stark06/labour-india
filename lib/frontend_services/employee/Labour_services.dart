@@ -27,17 +27,17 @@ class _ServicesState extends State<Services> {
   ];
 
   final List<String> headings = [
-    'Heading Line 1 for Card 1\nHeading Line 2 for Card 1',
-    'Heading Line 1 for Card 2\nHeading Line 2 for Card 2',
-    'Heading Line 1 for Card 3\nHeading Line 2 for Card 3',
-    'Heading Line 1 for Card 4\nHeading Line 2 for Card 4',
+    'Promote Transparency ',
+    'Ensure Compliance',
+    'Facilitate Communication',
+    'Easy Job Apply',
   ];
 
   final List<String> descriptions = [
-    'This is a description text for Card 1 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 2 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 3 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
-    'This is a description text for Card 4 which can be up to 6-7 lines long. This should be smaller text size to fit the design properly.',
+    'Ensure clear and open communication in all processes to build trust and foster accountability, Make information accessible .',
+    ' Adhere to industry regulations and internal policies to maintain legal standards and operational integrity, Regular audits .',
+    ' Encourage seamless information exchange by implementing reliable communication channels and tools,Foster an environment .',
+    'Simplify the application process with user-friendly interfaces and clear instructions. Enable quick and efficient job applications .',
   ];
 
   get selectedRole => RegisterPage();
@@ -71,7 +71,7 @@ class _ServicesState extends State<Services> {
         appBar: AppBar(
           title: Center(
             child: Image.asset(
-              'assets/images/laborindia.jpg',  // Replace with your image path
+              'assets/images/Logo.png',  // Replace with your image path
               height: 100.0,
             ),
           ),
@@ -209,7 +209,7 @@ class _ServicesState extends State<Services> {
                 padding: const EdgeInsets.all(16.0),
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    height: 400.0,
+                    height: 350.0,
                     autoPlay: true,
                     enlargeCenterPage: true,
                   ),
@@ -225,9 +225,20 @@ class _ServicesState extends State<Services> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
-                                  radius: 50.0,
-                                  backgroundImage: AssetImage('assets/images/cir$i.jpg'),  // Replace with your image paths
+                                  radius: 40.0,
+                                  backgroundColor: Colors.transparent, // Add this to avoid a background color
+                                  child: ClipOval(
+                                    child: SizedBox(
+                                      width: 80, // width and height should be the double of radius
+                                      height: 80,
+                                      child: FittedBox(
+                                        fit: BoxFit.cover,
+                                        child: Image.asset('assets/images/cur$i.jpg'),
+                                      ),
+                                    ),
+                                  ),
                                 ),
+
                                 SizedBox(height: 8.0),
                                 Text(
                                   headings[i - 1],  // Use the heading for each card
@@ -271,13 +282,13 @@ class _ServicesState extends State<Services> {
               ),
               // Third section
               Container(
-                color: Color(0xFF041701),
+                color: const Color(0xFF041701),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Logo at the top center
                       Center(
                         child: Image.asset(
@@ -286,86 +297,71 @@ class _ServicesState extends State<Services> {
                           height: 100,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      // Left and right parts with text
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _buildTextColumn(
-                              "Employees",
-                              [
-                                "Salary info",
-                                "Fairness",
-                                "Trust",
-                                "Future Plan"
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Expanded(
-                            child: _buildTextColumn(
-                              "Employers",
-                              [
-                                "Salary",
-                                "Transparency",
-                                "Compliance",
-                                "Communication"
-                              ],
-                            ),
-                          ),
-                        ],
+                      // Features sectio
+                      // Description
+                      const Text(
+                        "Get end-to-end visibility of your employees with top-notch staff management ",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _buildTextColumn(
-                              "Labours",
-                              [
-                                "Honesty",
-                                "Transparency",
-                                "Safety",
-                                "Integrity"
-                              ],
+                      const SizedBox(height: 20),
+                      // Social media handles
+                      // Contact details
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Contact Us",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 20),
-                          Expanded(
-                            child: _buildTextColumn(
-                              "Security",
-                              [
-                                "Guidance",
-                                "Safety",
-                                "Enforcement",
-                                "Training"
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Company logo and text at the bottom
-                      SizedBox(height: 20),
-                      Center(
-                        child: Image.asset(
-                          "assets/images/Logo.png",
-                          width: 80,
-                          height: 80,
+                            const SizedBox(height: 10),
+                            _buildContactDetailRow(Icons.phone, "+91 8926726726"),
+                            const SizedBox(height: 10),
+                            _buildContactDetailRow(Icons.mail, " nasctelangana@gmail.com"),
+                            const SizedBox(height: 5),
+                            _buildContactDetailRow(Icons.location_on, "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          "Company Name",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                      const SizedBox(height: 20),
+                      // Divider line
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: 0.5,
+                        color: const Color(0xFF766E6E),
+                      ),
+                      const SizedBox(height: 10),
+                      // Copy right text
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            size: 13,
                             color: Colors.white,
                           ),
-                        ),
+                          SizedBox(width: 5),
+                          Text(
+                            "2024 by ALTRUISTY. All rights reserved",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -415,3 +411,27 @@ class _ServicesState extends State<Services> {
     );
   }
 }
+Widget _buildContactDetailRow(IconData icon, String text) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: [
+        Icon(
+          icon,
+          size: 13,
+          color: Colors.white,
+        ),
+        const SizedBox(width: 5),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF766E6E),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+

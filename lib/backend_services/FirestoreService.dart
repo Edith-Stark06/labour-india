@@ -17,7 +17,7 @@ class FirestoreService {
     return false;
   }
 
-  Future<bool> isEmployee(String uid) async {
+  Future<bool> isemployee(String uid) async {
     try {
       final adminDoc = await _db.collection('roles').doc('employee').get();
       if (adminDoc.exists && adminDoc.data() != null && adminDoc.data()!.containsKey('employee')) {
@@ -34,12 +34,12 @@ class FirestoreService {
   Future<Map<String, bool>> checkRoles(String uid) async {
     final results = await Future.wait([
       isEmployer(uid),
-      isEmployee(uid),
+      isemployee(uid),
     ]);
     print(results);
     return {
       'isEmployer': results[0],
-      'isEmployee': results[1],
+      'isemployee': results[1],
     };
   }
 
@@ -55,7 +55,7 @@ class FirestoreService {
     }
   }
 
-  Future<bool> addUidToEmployee(String uid) async {
+  Future<bool> addUidToemployee(String uid) async {
     try {
       await _db.collection('roles').doc('employee').set({
         'employee': FieldValue.arrayUnion([uid])
