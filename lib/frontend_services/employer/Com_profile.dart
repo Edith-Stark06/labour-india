@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ngo/frontend_services/employer/Comp_services.dart';
 import '../edit_comp.dart';
-import 'Comp_services.dart'; // Import the ComServices page
+// Import the ComServices page
 
 class ComProfile extends StatefulWidget {
   @override
@@ -56,7 +56,10 @@ class _ComProfileState extends State<ComProfile> {
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseFirestore.instance.collection('company_details').doc(user.uid).set({
+      await FirebaseFirestore.instance
+          .collection('company_details')
+          .doc(user.uid)
+          .set({
         'username': username,
         'email': email,
         'addressPermanent': addressPermanent,
@@ -68,7 +71,8 @@ class _ComProfileState extends State<ComProfile> {
   Future<bool> _onWillPop() async {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => CompServices()), // Navigate to ComServices
+      MaterialPageRoute(
+          builder: (context) => CompServices()), // Navigate to ComServices
     );
     return true;
   }
@@ -85,7 +89,9 @@ class _ComProfileState extends State<ComProfile> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => CompServices()), // Navigate to ComServices
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CompServices()), // Navigate to ComServices
               );
             },
           ),
@@ -116,7 +122,9 @@ class _ComProfileState extends State<ComProfile> {
                     text: TextSpan(
                       style: TextStyle(fontSize: 16, color: Colors.black),
                       children: [
-                        TextSpan(text: 'Permanent Address:\n', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: 'Permanent Address:\n',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text: addressPermanent),
                       ],
                     ),
@@ -129,7 +137,9 @@ class _ComProfileState extends State<ComProfile> {
                     text: TextSpan(
                       style: TextStyle(fontSize: 16, color: Colors.black),
                       children: [
-                        TextSpan(text: 'Description:\n', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: 'Description:\n',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text: description),
                       ],
                     ),

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ngo/backend_services/login_check.dart';
 import '../../backend_services/FirestoreService.dart';
-import 'Labour_services.dart';
-import '../RegisterPage.dart';  // Ensure this import is correct
+import '../RegisterPage.dart'; // Ensure this import is correct
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class employee_Reg extends StatefulWidget {
   @override
@@ -14,7 +12,6 @@ class employee_Reg extends StatefulWidget {
 }
 
 class _employee_RegState extends State<employee_Reg> {
-
   final firestoreService = FirestoreService();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,32 +20,40 @@ class _employee_RegState extends State<employee_Reg> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool passwordsMatch = true;
 
   void checkPasswordMatch() {
     setState(() {
-      passwordsMatch = _passwordController.text == _confirmPasswordController.text;
+      passwordsMatch =
+          _passwordController.text == _confirmPasswordController.text;
     });
   }
 
   Future<void> _registerUser() async {
     if (!passwordsMatch) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Passwords do not match")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Passwords do not match")));
       return;
     }
 
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
       String userId = userCredential.user!.uid;
       bool success = await firestoreService.addUidToemployee(userId);
 
-
       // Store user details in 'employee' document under 'roles' collection
-      await _firestore.collection('roles').doc('employee').collection('employees').doc(userId).set({
+      await _firestore
+          .collection('roles')
+          .doc('employee')
+          .collection('employees')
+          .doc(userId)
+          .set({
         'phone number': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         // Add more fields as needed
@@ -66,7 +71,8 @@ class _employee_RegState extends State<employee_Reg> {
       if (e.code == 'weak-password') {
         Fluttertoast.showToast(msg: 'The password provided is too weak');
       } else if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(msg: 'The account already exists for that email');
+        Fluttertoast.showToast(
+            msg: 'The account already exists for that email');
       } else {
         Fluttertoast.showToast(msg: 'Registration failed: ${e.message}');
       }
@@ -214,7 +220,8 @@ class _employee_RegState extends State<employee_Reg> {
                       },
                       decoration: InputDecoration(
                         hintText: "Confirm password",
-                        errorText: passwordsMatch ? null : 'Passwords do not match',
+                        errorText:
+                            passwordsMatch ? null : 'Passwords do not match',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(

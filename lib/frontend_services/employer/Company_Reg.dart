@@ -3,8 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ngo/backend_services/login_check.dart';
 import '../../backend_services/FirestoreService.dart';
-import 'Comp_services.dart';
-import '../RegisterPage.dart';  // Ensure this import is correct
+import '../RegisterPage.dart'; // Ensure this import is correct
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Company_Reg extends StatefulWidget {
@@ -13,7 +12,6 @@ class Company_Reg extends StatefulWidget {
 }
 
 class _Company_RegState extends State<Company_Reg> {
-
   final firestoreService = FirestoreService();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,20 +25,24 @@ class _Company_RegState extends State<Company_Reg> {
 
   void checkPasswordMatch() {
     setState(() {
-      passwordsMatch = passwordController.text == confirmPasswordController.text;
+      passwordsMatch =
+          passwordController.text == confirmPasswordController.text;
     });
   }
 
   Future<void> _registerUser() async {
     if (!passwordsMatch) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Passwords do not match")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Passwords do not match")));
       return;
     }
 
     try {
       // Logging before attempting to create user
-      print("Attempting to create user with email: ${emailController.text.trim()}");
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      print(
+          "Attempting to create user with email: ${emailController.text.trim()}");
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text,
       );
@@ -55,7 +57,12 @@ class _Company_RegState extends State<Company_Reg> {
       print("Added UID to employer: $success");
 
       // Store user details in 'employer' document under 'roles' collection
-      await _firestore.collection('roles').doc('employer').collection('employers').doc(userId).set({
+      await _firestore
+          .collection('roles')
+          .doc('employer')
+          .collection('employers')
+          .doc(userId)
+          .set({
         'username': usernameController.text.trim(),
         'email': emailController.text.trim(),
         // Add more fields as needed
@@ -235,7 +242,8 @@ class _Company_RegState extends State<Company_Reg> {
                       },
                       decoration: InputDecoration(
                         hintText: "Confirm Password",
-                        errorText: passwordsMatch ? null : 'Passwords do not match',
+                        errorText:
+                            passwordsMatch ? null : 'Passwords do not match',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide(

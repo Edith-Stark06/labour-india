@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../backend_services/FirestoreService.dart';
 import '../Forgot_Pass.dart';
 import '../RegisterPage.dart';
-import '../employer/Comp_Services.dart';
 
 class Employer extends StatefulWidget {
   @override
@@ -15,14 +14,14 @@ class Employer extends StatefulWidget {
 }
 
 class _EmployerState extends State<Employer> {
-
   final firestoreService = FirestoreService();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   void showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> signInWithEmailAndPassword() async {
@@ -32,7 +31,8 @@ class _EmployerState extends State<Employer> {
     }
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
@@ -205,7 +205,8 @@ class _EmployerState extends State<Employer> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Forgot_Pass()),
+                          MaterialPageRoute(
+                              builder: (context) => Forgot_Pass()),
                         );
                       },
                       child: Text(
@@ -255,7 +256,8 @@ class _EmployerState extends State<Employer> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => RegisterPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()),
                               );
                             },
                             child: const Text(

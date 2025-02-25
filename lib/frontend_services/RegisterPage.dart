@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 import 'employer/Company_Reg.dart';
 import 'employee/Labour_Reg.dart';
@@ -17,7 +15,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _createRoleCollection() async {
     try {
-
       if (selectedRole == 'employee') {
         Navigator.pushReplacement(
           context,
@@ -35,7 +32,6 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     } catch (e) {
       print("Error creating role collection: $e");
-
     }
   }
 

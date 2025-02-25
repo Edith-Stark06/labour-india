@@ -4,11 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ngo/backend_services/login_check.dart';
 
 import '../AboutUsPage.dart';
-import '../Change_Pass.dart';
 import 'Com_profile.dart';
-import '../GovernmentSchemesPage.dart';
 import '../Job_posting.dart';
-import '../employee/Labour_Reg.dart';
 import '../RegisterPage.dart';
 
 class CompServices extends StatelessWidget {
@@ -40,7 +37,7 @@ class CompServices extends StatelessWidget {
       appBar: AppBar(
         title: Center(
           child: Image.asset(
-            'assets/images/Logo.png',  // Replace with your image path
+            'assets/images/Logo.png', // Replace with your image path
             height: 100.0,
           ),
         ),
@@ -73,8 +70,7 @@ class CompServices extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ComProfile()),
+                  MaterialPageRoute(builder: (context) => ComProfile()),
                 );
               },
             ),
@@ -84,8 +80,7 @@ class CompServices extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const JobPosting()),
+                  MaterialPageRoute(builder: (context) => const JobPosting()),
                 );
               },
             ),
@@ -95,8 +90,7 @@ class CompServices extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => AboutUsPage()),
+                  MaterialPageRoute(builder: (context) => AboutUsPage()),
                 );
               },
             ),
@@ -107,13 +101,10 @@ class CompServices extends StatelessWidget {
                 await FirebaseAuth.instance.signOut();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => login_check()),
+                  MaterialPageRoute(builder: (context) => login_check()),
                 );
               },
             ),
-
-
           ],
         ),
       ),
@@ -138,7 +129,7 @@ class CompServices extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Image.asset(
-                              'assets/images/cur$i.jpg',  // Replace with your image paths
+                              'assets/images/cur$i.jpg', // Replace with your image paths
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -149,7 +140,8 @@ class CompServices extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              imageTexts[i - 1],  // Use the corresponding text from the list
+                              imageTexts[i -
+                                  1], // Use the corresponding text from the list
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -187,11 +179,13 @@ class CompServices extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 50.0,
-                                backgroundImage: AssetImage('assets/images/cir$i.jpg'),  // Replace with your image paths
+                                backgroundImage: AssetImage(
+                                    'assets/images/cir$i.jpg'), // Replace with your image paths
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                headings[i - 1],  // Use the heading for each card
+                                headings[
+                                    i - 1], // Use the heading for each card
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
@@ -199,7 +193,8 @@ class CompServices extends StatelessWidget {
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                descriptions[i - 1],  // Use the description for each card
+                                descriptions[
+                                    i - 1], // Use the description for each card
                                 style: const TextStyle(
                                   fontSize: 14.0,
                                 ),
@@ -277,9 +272,11 @@ class CompServices extends StatelessWidget {
                           const SizedBox(height: 10),
                           _buildContactDetailRow(Icons.phone, "+91 8926726726"),
                           const SizedBox(height: 10),
-                          _buildContactDetailRow(Icons.mail, "nasctelangana@gmail.com "),
+                          _buildContactDetailRow(
+                              Icons.mail, "nasctelangana@gmail.com "),
                           const SizedBox(height: 5),
-                          _buildContactDetailRow(Icons.location_on, "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
+                          _buildContactDetailRow(Icons.location_on,
+                              "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
                         ],
                       ),
                     ),
@@ -321,9 +318,12 @@ class CompServices extends StatelessWidget {
       ),
     );
   }
-  Widget _buildTextColumn(String heading, List<String> subHeadings, {bool isCentered = false}) {
+
+  Widget _buildTextColumn(String heading, List<String> subHeadings,
+      {bool isCentered = false}) {
     return Column(
-      crossAxisAlignment: isCentered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment:
+          isCentered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
           heading,

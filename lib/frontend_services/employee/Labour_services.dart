@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Add this import for SystemNavigator.pop()
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../backend_services/login_check.dart';
 import '../AboutUsPage.dart';
@@ -44,24 +43,25 @@ class _ServicesState extends State<Services> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Are you sure?'),
-        content: Text('Do you want to exit the app?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to exit the app?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No'),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator
+                    .pop(), // Use SystemNavigator.pop() to exit the app
+                child: Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => SystemNavigator.pop(), // Use SystemNavigator.pop() to exit the app
-            child: Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
+        )) ??
+        false;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _ServicesState extends State<Services> {
         appBar: AppBar(
           title: Center(
             child: Image.asset(
-              'assets/images/Logo.png',  // Replace with your image path
+              'assets/images/Logo.png', // Replace with your image path
               height: 100.0,
             ),
           ),
@@ -114,7 +114,8 @@ class _ServicesState extends State<Services> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GovernmentSchemesPage()),
+                    MaterialPageRoute(
+                        builder: (context) => GovernmentSchemesPage()),
                   );
                 },
               ),
@@ -147,12 +148,10 @@ class _ServicesState extends State<Services> {
                   await FirebaseAuth.instance.signOut();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => login_check()),
+                    MaterialPageRoute(builder: (context) => login_check()),
                   );
                 },
               ),
-
             ],
           ),
         ),
@@ -177,7 +176,7 @@ class _ServicesState extends State<Services> {
                               width: MediaQuery.of(context).size.width,
                               margin: EdgeInsets.symmetric(horizontal: 5.0),
                               child: Image.asset(
-                                'assets/images/cur$i.jpg',  // Replace with your image paths
+                                'assets/images/cur$i.jpg', // Replace with your image paths
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -188,7 +187,8 @@ class _ServicesState extends State<Services> {
                             ),
                             Center(
                               child: Text(
-                                imageTexts[i - 1],  // Use the corresponding text from the list
+                                imageTexts[i -
+                                    1], // Use the corresponding text from the list
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -226,22 +226,25 @@ class _ServicesState extends State<Services> {
                               children: [
                                 CircleAvatar(
                                   radius: 40.0,
-                                  backgroundColor: Colors.transparent, // Add this to avoid a background color
+                                  backgroundColor: Colors
+                                      .transparent, // Add this to avoid a background color
                                   child: ClipOval(
                                     child: SizedBox(
-                                      width: 80, // width and height should be the double of radius
+                                      width:
+                                          80, // width and height should be the double of radius
                                       height: 80,
                                       child: FittedBox(
                                         fit: BoxFit.cover,
-                                        child: Image.asset('assets/images/cur$i.jpg'),
+                                        child: Image.asset(
+                                            'assets/images/cur$i.jpg'),
                                       ),
                                     ),
                                   ),
                                 ),
-
                                 SizedBox(height: 8.0),
                                 Text(
-                                  headings[i - 1],  // Use the heading for each card
+                                  headings[
+                                      i - 1], // Use the heading for each card
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
@@ -249,7 +252,8 @@ class _ServicesState extends State<Services> {
                                 ),
                                 SizedBox(height: 8.0),
                                 Text(
-                                  descriptions[i - 1],  // Use the description for each card
+                                  descriptions[i -
+                                      1], // Use the description for each card
                                   style: TextStyle(
                                     fontSize: 14.0,
                                   ),
@@ -325,11 +329,14 @@ class _ServicesState extends State<Services> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            _buildContactDetailRow(Icons.phone, "+91 8926726726"),
+                            _buildContactDetailRow(
+                                Icons.phone, "+91 8926726726"),
                             const SizedBox(height: 10),
-                            _buildContactDetailRow(Icons.mail, " nasctelangana@gmail.com"),
+                            _buildContactDetailRow(
+                                Icons.mail, " nasctelangana@gmail.com"),
                             const SizedBox(height: 5),
-                            _buildContactDetailRow(Icons.location_on, "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
+                            _buildContactDetailRow(Icons.location_on,
+                                "12-13-479, Street No: 1, Tarnaka, Hyderabad-500017"),
                           ],
                         ),
                       ),
@@ -387,7 +394,7 @@ class _ServicesState extends State<Services> {
         ),
         SizedBox(height: 10),
         ...items.map(
-              (item) => Padding(
+          (item) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(
               children: [
@@ -411,6 +418,7 @@ class _ServicesState extends State<Services> {
     );
   }
 }
+
 Widget _buildContactDetailRow(IconData icon, String text) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
@@ -434,4 +442,3 @@ Widget _buildContactDetailRow(IconData icon, String text) {
     ),
   );
 }
-
